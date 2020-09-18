@@ -6,13 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+    <ImageView
+        android:id="@+id/imageViewGallows"
+        app:srcCompat="@drawable/gallows0"
+        android:contentDescription="@string/gallows"
+        android:onClick="onGallowsClick"
+
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewGuessedWord"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <TextView
+        android:id="@+id/textViewGuessedWord"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:letterSpacing="0.5"
+        android:typeface="monospace"
+        android:textAllCaps="true"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextLetter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewGallows" />
 
+    <EditText
+        android:id="@+id/editTextLetter"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:typeface="monospace"
+        android:inputType="textCapCharacters"
+        android:maxLength="1"
+        android:hint="@string/guess_a_letter"
+        android:gravity="center"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewGuessedWord" />
 </androidx.constraintlayout.widget.ConstraintLayout>
