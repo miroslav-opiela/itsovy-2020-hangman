@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     private Game hangmanGame;
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.textViewGuessedWord);
         editText = findViewById(R.id.editTextLetter);
 
-        hangmanGame = new HangmanGame();
+        hangmanGame = new HangmanGame(new Random());
     }
 
     public void onGallowsClick(View view) {
