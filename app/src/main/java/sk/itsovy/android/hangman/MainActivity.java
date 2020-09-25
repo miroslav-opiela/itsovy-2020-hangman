@@ -1,11 +1,13 @@
 package sk.itsovy.android.hangman;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
     private TextView textView;
     private EditText editText;
+
+    private static final String BUNDLE_KEY = "game";
 
     private final int[] gallowsIds = {
             R.drawable.gallows0,
@@ -41,7 +45,20 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.textViewGuessedWord);
         editText = findViewById(R.id.editTextLetter);
 
-        restartGame();
+        if (savedInstanceState == null) {
+            restartGame();
+        } else {
+            hangmanGame = (Game) savedInstanceState.getSerializable(BUNDLE_KEY);
+            updateGallows();
+            updateText();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(BUNDLE_KEY, hangmanGame);
     }
 
     public void onGallowsClick(View view) {
@@ -71,20 +88,28 @@ public class MainActivity extends AppCompatActivity {
         editText.setText("");
 
         if (success) {
-            textView.setText(hangmanGame.getGuessedCharacters());
+            updateText();
             if (hangmanGame.isWon()) {
                 alertWonGame();
             }
         } else {
-            int gallowsIdx = Game.DEFAULT_ATTEMPTS_LEFT - hangmanGame.getAttemptsLeft();
-            imageView.setImageResource(gallowsIds[gallowsIdx]);
-
+            updateGallows();
             if (hangmanGame.getAttemptsLeft() == 0) {
                 // PREHRA
                 alertLostGame();
                 textView.setText(hangmanGame.getChallengeWord());
             }
         }
+    }
+
+    private void updateText() {
+        textView.setText(hangmanGame.getGuessedCharacters());
+    }
+
+    private void updateGallows() {
+        int gallowsIdx = Game.DEFAULT_ATTEMPTS_LEFT - hangmanGame.getAttemptsLeft();
+        imageView.setImageResource(gallowsIds[gallowsIdx]);
+
     }
 
     private void alertLostGame() {

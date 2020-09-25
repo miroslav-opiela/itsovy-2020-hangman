@@ -1,10 +1,12 @@
 package sk.itsovy.android.hangman;
 
+import java.io.Serializable;
+
 /**
  * Objekt danej triedy obsahuje informacie o hladanom slove aj o aktualnom stave hry - uhadnuta cast slova, pocet zostavajucich pokusov.
  * V konstruktore vygenerujte nahodne slovo, ktore sa bude hladat. Mozete pouzit zoznam stringov, z ktoreho vyberiete nahodny.
  */
-public interface Game {
+public interface Game extends Serializable {
 
     /**
      * Defaultny pocet pokusov na zaciatku hry.
