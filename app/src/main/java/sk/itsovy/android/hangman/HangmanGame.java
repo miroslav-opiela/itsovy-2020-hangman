@@ -1,5 +1,7 @@
 package sk.itsovy.android.hangman;
 
+import android.os.SystemClock;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +9,8 @@ import java.util.List;
 import java.util.Random;
 
 public class HangmanGame implements Game {
+
+    private long startTime;
 
     /**
      * Pocet ostavajucich pokusov
@@ -29,6 +33,11 @@ public class HangmanGame implements Game {
         for (int i = 0; i < word.length(); i++) {
             guessed.append(UNGUESSED_CHAR);
         }
+        startTime = SystemClock.elapsedRealtime();
+    }
+
+    public long getTime() {
+        return SystemClock.elapsedRealtime() - startTime;
     }
 
     @Override

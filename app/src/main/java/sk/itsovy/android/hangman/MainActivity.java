@@ -1,8 +1,11 @@
 package sk.itsovy.android.hangman;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
@@ -90,6 +93,10 @@ public class MainActivity extends AppCompatActivity {
         if (success) {
             updateText();
             if (hangmanGame.isWon()) {
+                if (hangmanGame instanceof HangmanGame) {
+                    HangmanGame hg = (HangmanGame) hangmanGame;
+                    updateBestTime(hg.getTime());
+                }
                 alertWonGame();
             }
         } else {
@@ -128,5 +135,31 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(hangmanGame.getGuessedCharacters());
         imageView.setColorFilter(null);
         imageView.setImageResource(gallowsIds[0]);
+    }
+
+    private void updateBestTime(long time) {
+        // zapisovat do preferences
+        SharedPreferences pref = getPreferences(Context.MODE_PRIVATE);
+        long bestTime = pref.getLong("BestTime", Long.MAX_VALUE);
+        if (time < bestTime) {
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putLong("BestTime", time);
+            editor.apply();
+            newBestTime(time);
+        }
+    }
+
+    private void newBestTime(long time) {
+        // 1. Instantiate an <code><a href="/reference/android/app/AlertDialog.Builder.html">AlertDialog.Builder</a></code> with its constructor
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // 2. Chain together various setter methods to set the dialog characteristics
+
+        builder.setMessage("Your time is " + time + "ms")
+                .setTitle("Best time");
+
+        // 3. Get the <code><a href="/reference/android/app/AlertDialog.html">AlertDialog</a></code> from <code><a href="/reference/android/app/AlertDialog.Builder.html#create()">create()</a></code>
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
